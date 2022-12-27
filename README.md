@@ -4,3 +4,4 @@ A collection of exercises to practice learning PHP. The exercises are gotten fro
 ## Exercises
 - [Caesar Cipher](caesar_cipher.php)
 - [Stock Picker](stock_picker.php)
+- [Sub Strings](substrings.php)
