@@ -1,8 +1,8 @@
 <?php
 	class GameStatus {
-		public $isDraw;
-		public $isGameOver;
-		public $winner;
+		public bool $isDraw;
+		public bool $isGameOver;
+		public ?string $winner;
 
 		private $board;
 
@@ -24,12 +24,12 @@
 			return true;
 		}
 
-		private function checkWinner() : bool {
+		private function checkWinner() : ?string {
 			// Check rows
 			for ($y = 0; $y < 3; $y++) {
 				// checks if row is the same
 				// array flip merges the values if they are the same since there can not be duplicate keys
-				if (count(array_flip($this->board[$y])) === 1) {
+				if (count(array_unique($this->board[$y])) === 1) {
 					return $this->board[$y][0];
 				}
 			}
@@ -50,7 +50,7 @@
 			];
 
 			foreach ($diagonalPositions as $pos) {
-				if (count(array_flip($this->board[$y])) === 1) {
+				if (count(array_unique($pos)) === 1) {
 					return pos[0];
 				}
 			}

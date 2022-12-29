@@ -23,10 +23,11 @@
 		public function start() {
 			$gameStatus = $this->gameLoop();
 		
+			$this->displayBoard();	
 			if ($gameStatus->isDraw) {
-				echo "DRAW";
+				echo "DRAW\n";
 			} else {
-				echo "{$gameStatus->winner} wins.";
+				echo "{$gameStatus->winner} wins.\n";
 			}
 		}
 
@@ -52,28 +53,32 @@
 			do {
 				$currentPlayer = $this->players[$this->currentPlayerIndex];
 
-				[$x, $y] = $this->getMove();
+				$this->displayBoard();
+				[$x, $y] = $currentPlayer->getMove($this->board);
 				$this->board[$y][$x] = $currentPlayer->marker;
 
-				$gameStatus = new GameStatus(board: $board, currentMarker: $currentPlayer->marker);
+				$gameStatus = new GameStatus($this->board);
 				$this->currentPlayerIndex = ($this->currentPlayerIndex + 1) % 2;
 			} while (!$gameStatus->isGameOver);
 
 			return $gameStatus;
 		}
 
-		private function getMove() : array {
-			$currentPlayer = $this->players[$this->currentPlayerIndex];
+		private function displayBoard() {
+			for ($y = 0; $y < 3; $y++) {
+				$row = [];
+				for ($x = 0; $x < 3; $x++) {
+					if ($this->board[$y][$x]) {
+						array_push($row, " {$this->board[$y][$x]} ");
+					} else {
+						array_push($row, "   ");
+					}
+				}
+				echo implode("|", $row);
+				echo "\n";
+			}
 
-			do {
-				$input = readline("{$currentPlayer->token}' turn: Enter move (x y)");
-				[$x, $y] = explode(" ", $input);
-				[$x, $y] = [(int) $x, (int) $y];
-
-				// Validate move is not out of bounds and a move has not being played on that position
-		  } while ($x < 0 || $x >= 3 || $y < 0 || $y >= 3 || $this->board[$y][$x]);
-			
-			return [$x, $y];
+			echo "\n";
 		}
 	}
 ?>
