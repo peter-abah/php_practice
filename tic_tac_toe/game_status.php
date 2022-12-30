@@ -9,8 +9,8 @@
 		public function __construct(array $board) {
 			$this->board = $board;
 
-			$this->isDraw = $this->checkDraw();
 			$this->winner = $this->checkWinner();
+			$this->isDraw = !$this->winner && $this->checkDraw();
 			$this->isGameOver = $this->isDraw || !!$this->winner;
 		}
 
@@ -51,7 +51,7 @@
 
 			foreach ($diagonalPositions as $pos) {
 				if (count(array_unique($pos)) === 1) {
-					return pos[0];
+					return $pos[0];
 				}
 			}
 			
